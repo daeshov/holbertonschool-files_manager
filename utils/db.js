@@ -22,13 +22,17 @@ class DBClient {
   async isAlive() {
     try {
       await this.client.connect();
-      this.db = this.client.db(DB_DATABASE);
+      const database = this.client.db(this.databaseName);
+      await database.command({ ping: 1 });
       return true;
     } catch (error) {
       console.error('Error connecting to MongoDB:', error.message);
       return false;
+    } finally {
+      await this.client.close();
     }
   }
+
 
   async nbUsers() {
     try {
