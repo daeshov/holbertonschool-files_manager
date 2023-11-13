@@ -1,13 +1,12 @@
-//importa el paquete mongodb y configura las variables de entorno.
+// importa el paquete mongodb y configura las variables de entorno.
 const { MongoClient } = require('mongodb');
 
 const {
   DB_HOST = 'localhost',
   DB_PORT = 27017,
-  DB_DATABASE = 'files_manager',
 } = process.env;
 
-//Creacion de DBCliente con sus variables de entorno
+// Creacion de DBCliente con sus variables de entorno
 
 class DBClient {
   constructor() {
@@ -32,7 +31,6 @@ class DBClient {
       await this.client.close();
     }
   }
-
 
   async nbUsers() {
     try {
@@ -59,4 +57,3 @@ class DBClient {
 
 const dbClient = new DBClient();
 module.exports = dbClient;
-
