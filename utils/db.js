@@ -1,5 +1,6 @@
+// Importancion del Modulo,  q proporciona la funcionalidad necesaria para interactuar con la base de datos
 const MongoClient = require('mongodb');
-
+// Declaracion de las variables de configuracion
 const host = process.env.DB_HOST || 'localhost';
 const port = process.env.DB_PORT || 27017;
 const dbName = process.env.DB_DATABASE || 'files_manager';
