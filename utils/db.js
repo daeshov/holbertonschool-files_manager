@@ -76,8 +76,7 @@ const dbClient = new DBClient();
 
 module.exports = dbClient;
 
-
-//DBClient should have:
+// DBClient should have:
 // the constructor that creates a client to MongoDB:
 // host: from the environment variable DB_HOST or default: localhost
 // port: from the environment variable DB_PORT or default: 27017
