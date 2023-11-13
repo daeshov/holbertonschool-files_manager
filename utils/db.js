@@ -4,34 +4,29 @@ const { MongoClient } = require('mongodb');
 const {
   DB_HOST = 'localhost',
   DB_PORT = 27017,
+  DB_DATABASE = 'files_manager',
 } = process.env;
 
 // Creacion de DBCliente con sus variables de entorno
 
 class DBClient {
   constructor() {
-    this.client = new MongoClient(`mongodb://${DB_HOST}:${DB_PORT}`, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-
-    this.db = null; // Se asignará más adelante cuando se establezca la conexión
+    this.db = null;
+    MongoClient.connect(
+      `mongodb://${host}:${port}/${dbName}`,
+      { useUnifiedTopology: true },
+      (err, client) => {
+        if (err) console.log(err);
+        this.db = client.db(dbName);
+        this.db.createCollection('users');
+        this.db.createCollection('files');
+      },
+    );
   }
 
-  async isAlive() {
-    try {
-      await this.client.connect();
-      const database = this.client.db(this.databaseName);
-      await database.command({ ping: 1 });
-      return true;
-    } catch (error) {
-      console.error('Error connecting to MongoDB:', error.message);
-      return false;
-    } finally {
-      await this.client.close();
-    }
+  isAlive() {
+    return !!this.db;
   }
-
   async nbUsers() {
     try {
       const usersCollection = this.db.collection('users');
