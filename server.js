@@ -1,5 +1,5 @@
-import express from 'express';
-import controllerRouting from './routes/index';
+const express = require('express');
+const controllerRouting = require('./routes/index');
 
 const exPort = process.env.PORT || 5000;
 const app = express();
