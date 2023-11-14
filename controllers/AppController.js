@@ -34,9 +34,8 @@ const AppController = {
   },
 };
 
-*/
-
 module.exports = AppController;
+*/
 
 
 import redisClient from '../utils/redis';
