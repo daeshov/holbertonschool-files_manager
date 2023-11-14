@@ -21,11 +21,11 @@ router.post('/users', UserController, postNew);
 module.exports = router;
 */
 
-import express from 'express';
-import AppController from '../controllers/AppController';
-import AuthController from '../controllers/AuthController';
-import FilesController from '../controllers/FilesController';
-import UsersController from '../controllers/UsersController';
+const express = require('express');
+const AppController = require('../controllers/AppController');
+const AuthController = require('../controllers/AuthController');
+const FilesController = require ('../controllers/FilesController');
+const UsersController = require ('../controllers/UsersController');
 
 function controllerRouting(app) {
   const router = express.Router();
@@ -80,4 +80,4 @@ function controllerRouting(app) {
   });
 }
 
-export default controllerRouting;
+module.exports = controllerRouting;
