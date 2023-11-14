@@ -22,7 +22,9 @@
         "mongodb": "^3.7.4",
         "redis": "^4.6.10",
         "sha1": "^1.1.1",
-        "uuid": "^8.2.0"
+        "uuid": "^8.2.0",
+        "sinon": "^7.5.0",
+        "eslint-config-airbnb-base": "^14.2.1"
     },
     "devDependencies": {
         "@babel/cli": "^7.8.0",
