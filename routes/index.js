@@ -21,6 +21,7 @@ router.post('/users', UserController, postNew);
 module.exports = router;
 */
 
+const express = require('express');
 import express from 'express';
 import AppController from '../controllers/AppController';
 import AuthController from '../controllers/AuthController';
