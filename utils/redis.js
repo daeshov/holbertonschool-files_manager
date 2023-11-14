@@ -1,27 +1,49 @@
-import redis from 'redis';
-import { promisify } from 'util';
+const Redis = require('redis'); // Correr "npm list redis" para asegurarme de tener instalada la biblioteca Redis
 
 class RedisClient {
   constructor() {
-    this.client = redis.createClient();
-    this.get = promisify(this.client.get).bind(this.client);
+    this.client = Redis.createClient();
+
+    // Manejar errores de conexión
+    this.client.on('error', (err) => {
+      console.error(`Error en la conexión Redis: ${err}`);
+    });
   }
 
-  isAlive() {
-    return this.client.connected;
+  async isAlive() {
+    // Verificar si la conexión está viva
+    return await new Promise((resolve) => {
+      this.client.ping('pong', (err) => {
+        resolve(!err);
+      });
+    });
   }
 
   async get(key) {
-    return this.get(key, (err, reply) => reply);
+    return await new Promise((resolve) => {
+      this.client.get(key, (err, value) => {
+        resolve(value);
+      });
+    });
   }
 
   async set(key, value, duration) {
-    return this.client.set(key, value, 'EX', duration);
+    return await new Promise((resolve) => {
+      this.client.setex(key, duration, value, (err) => {
+        resolve(!err);
+      });
+    });
   }
 
-  async del(key) { return this.client.del(key); }
+  async del(key) {
+    return await new Promise((resolve) => {
+      this.client.del(key, (err) => {
+        resolve(!err);
+      });
+    });
+  }
 }
 
+// Crear e exportar una instancia de RedisClient llamada redisClient
 const redisClient = new RedisClient();
-
 module.exports = redisClient;
