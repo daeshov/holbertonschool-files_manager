@@ -1,3 +1,6 @@
+//Importacion 
+import { postNew, getMe } from '../controllers/UsersController';
+
 // Configurando las rutas index.js
 
 const express = require('express');
