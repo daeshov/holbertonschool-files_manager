@@ -21,8 +21,16 @@ class DBClient {
       async (err, client) => {
         if (err) console.log(err);
         this.db = client.db(dbName);
-        this.db.createCollection('users');
-        this.db.createCollection('files');
+        const usersCollectionExists = await this.db.listCollections({ name: 'users' }).hasNext();
+        if (!usersCollectionExists) {
+          await this.db.createCollection('users');
+          await this.db.collection('users').createIndex({ email: 1 }, { unique: true });
+        }
+
+        const filesCollectionExists = await this.db.listCollections({ name: 'files' }).hasNext();
+        if (!filesCollectionExists) {
+          await this.db.createCollection('files');
+        }
       },
     );
   }
