@@ -1,36 +1,20 @@
-// Importancion del Modulo, que proporciona la->
-// ->funcionalidad necesaria para interactuar con la base de datos
-const { MongoClient } = require('mongodb');
+const MongoClient = require('mongodb');
 
-// Declaracion de las variables de configuracion
 const host = process.env.DB_HOST || 'localhost';
 const port = process.env.DB_PORT || 27017;
 const dbName = process.env.DB_DATABASE || 'files_manager';
-const db_uri = "mongodb+srv://jdarahthomas:Z63ct2EYFgvLNyAg@cluster0.g80qlgd.mongodb.net/test?retryWrites=true&w=majority";
 
 class DBClient {
   constructor() {
     this.db = null;
-    this.connect();
-  }
-
-  connect() {
     MongoClient.connect(
-      db_uri,
+      `mongodb://${host}:${port}/${dbName}`,
       { useUnifiedTopology: true },
-      async (err, client) => {
+      (err, client) => {
         if (err) console.log(err);
         this.db = client.db(dbName);
-        const usersCollectionExists = await this.db.listCollections({ name: 'users' }).hasNext();
-        if (!usersCollectionExists) {
-          await this.db.createCollection('users');
-          await this.db.collection('users').createIndex({ email: 1 }, { unique: true });
-        }
-
-        const filesCollectionExists = await this.db.listCollections({ name: 'files' }).hasNext();
-        if (!filesCollectionExists) {
-          await this.db.createCollection('files');
-        }
+        this.db.createCollection('users');
+        this.db.createCollection('files');
       },
     );
   }
