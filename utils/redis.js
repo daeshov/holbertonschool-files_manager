@@ -12,7 +12,7 @@ class RedisClient {
 
   async isAlive() {
     // Verificar si la conexión está viva
-    return await new Promise((resolve) => {
+    return new Promise((resolve) => {
       this.client.ping('pong', (err) => {
         resolve(!err);
       });
@@ -20,7 +20,7 @@ class RedisClient {
   }
 
   async get(key) {
-    return await new Promise((resolve) => {
+    return new Promise((resolve) => {
       this.client.get(key, (err, value) => {
         resolve(value);
       });
@@ -28,7 +28,7 @@ class RedisClient {
   }
 
   async set(key, value, duration) {
-    return await new Promise((resolve) => {
+    return new Promise((resolve) => {
       this.client.setex(key, duration, value, (err) => {
         resolve(!err);
       });
@@ -36,7 +36,7 @@ class RedisClient {
   }
 
   async del(key) {
-    return await new Promise((resolve) => {
+    return new Promise((resolve) => {
       this.client.del(key, (err) => {
         resolve(!err);
       });

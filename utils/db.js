@@ -1,19 +1,24 @@
 // Importancion del Modulo, que proporciona la->
 // ->funcionalidad necesaria para interactuar con la base de datos
-const MongoClient = require('mongodb');
+const { MongoClient } = require('mongodb');
 
 // Declaracion de las variables de configuracion
 const host = process.env.DB_HOST || 'localhost';
 const port = process.env.DB_PORT || 27017;
 const dbName = process.env.DB_DATABASE || 'files_manager';
+const db_uri = "mongodb+srv://jdarahthomas:Z63ct2EYFgvLNyAg@cluster0.g80qlgd.mongodb.net/test?retryWrites=true&w=majority";
 
 class DBClient {
   constructor() {
     this.db = null;
+    this.connect();
+  }
+
+  connect() {
     MongoClient.connect(
-      `mongodb://${host}:${port}/${dbName}`,
+      db_uri,
       { useUnifiedTopology: true },
-      (err, client) => {
+      async (err, client) => {
         if (err) console.log(err);
         this.db = client.db(dbName);
         this.db.createCollection('users');
