@@ -1,7 +1,8 @@
 const express = require('express');
 const controllerRouting = require('./routes/index');
-
-const exPort = process.env.PORT || 5000;
+require('dotenv').config()
+console.log(process.env.PORT);
+const exPort = process.env.PORT || 1234;
 const app = express();
 
 app.use(express.json());
