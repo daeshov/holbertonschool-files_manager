@@ -1,6 +1,9 @@
 {
     "name": "files_manager",
     "version": "1.0.0",
+    "engines": {
+        "node": ">20.9.0"
+    },
     "description": "",
     "main": "index.js",
     "scripts": {
