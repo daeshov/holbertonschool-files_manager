@@ -17,7 +17,7 @@ class RedisClient {
     // Verificar si la conexión está viva
     return new Promise((resolve) => {
       this.client.ping('pong', (err) => {
-        resolve(err); // Resuelve true si no hay error, false si hay error
+        resolve(err);
       });
     });
   }
