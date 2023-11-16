@@ -1,9 +1,12 @@
 const Redis = require('redis'); // Correr "npm list redis" para asegurarme de tener instalada la biblioteca Redis
+const { promisify } = require('util');
+
 
 class RedisClient {
   constructor() {
     this.client = Redis.createClient();
 
+    this.getAsync = promisify(this.client.get).bind(this.client);
     // Manejar errores de conexión
     this.client.on('error', (err) => {
       console.error(`Error en la conexión Redis: ${err}`);
@@ -14,7 +17,7 @@ class RedisClient {
     // Verificar si la conexión está viva
     return new Promise((resolve) => {
       this.client.ping('pong', (err) => {
-        resolve(err);
+        resolve(err); // Resuelve true si no hay error, false si hay error
       });
     });
   }
