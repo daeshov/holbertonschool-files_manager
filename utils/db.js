@@ -11,14 +11,18 @@ class DBClient {
     MongoClient.connect(
       `mongodb://${host}:${port}/${dbName}`,
       { useUnifiedTopology: true },
-      (err, client) => {
-        if (err) console.log(err);
-        this.db = client.db(dbName);
-        this.db.createCollection('users');
-        this.db.createCollection('files');
-      },
+      async (err, client) => {
+        if (err) {
+          console.log(err);
+        } else {
+          this.db = client.db(dbName);
+          await this.db.createCollection('users');
+          await this.db.createCollection('files');
+        }
+      }
     );
   }
+
 
   isAlive() {
     return !!this.db;

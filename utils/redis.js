@@ -13,9 +13,13 @@ class RedisClient {
   async isAlive() {
     // Verificar si la conexión está viva
     return new Promise((resolve) => {
-      this.client.ping('pong', (err) => {
-        resolve(err);
-      });
+      if (this.client.connected) {
+        this.client.ping('pong', (err) => {
+          resolve(err);
+        });
+      } else {
+        resolve(false);
+      }
     });
   }
 
