@@ -1,10 +1,11 @@
+import { expect } from 'chai';
 import redisClient from './utils/redis';
 
 (async () => {
     console.log(redisClient.isAlive());
     console.log(await redisClient.get('myKey'));
     await redisClient.set('myKey', 12, 5);
-    console.log(await redisClient.get('myKey'));
+    console.log(await redisClient.get('myKey'));zxvb
 
     setTimeout(async () => {
         console.log(await redisClient.get('myKey'));
