@@ -1,5 +1,6 @@
 const Redis = require('redis'); // Correr "npm list redis" para asegurarme de tener instalada la biblioteca Redis
 const { promisify } = require('util');
+//import * as redis from 'redis';
 
 
 class RedisClient {
