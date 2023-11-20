@@ -9,8 +9,8 @@ class RedisClient {
 
     this.getAsync = promisify(this.client.get).bind(this.client);
     // Manejar errores de conexión
-    this.client.on('error', (err) => {
-      console.error(`Error en la conexión Redis: ${err}`);
+    this.client.on('error', (error) => {
+      console.error(`Error en la conexión Redis: ${error.message}`);
     });
   }
 
@@ -26,27 +26,15 @@ class RedisClient {
 //  }
 
   async get(key) {
-    return new Promise((resolve) => {
-      this.client.get(key, (err, value) => {
-        resolve(value);
-      });
-    });
+    return this.getAsync(key);
   }
 
   async set(key, value, duration) {
-    return new Promise((resolve) => {
-      this.client.setex(key, duration, value, (err) => {
-        resolve(!err);
-      });
-    });
+    this.client.setex(key, duration, value);
   }
 
   async del(key) {
-    return new Promise((resolve) => {
-      this.client.del(key, (err) => {
-        resolve(!err);
-      });
-    });
+    this.client.del(key);
   }
 }
 
