@@ -1,8 +1,6 @@
-import { expect } from 'chai';
 import redisClient from './utils/redis';
 
-
-redisClient.clien.on('connect', async () => {
+(async () => {
     console.log(redisClient.isAlive());
     console.log(await redisClient.get('myKey'));
     await redisClient.set('myKey', 12, 5);
