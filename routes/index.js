@@ -10,7 +10,6 @@ function controllerRouting(app) {
 
   router.get('/status', (req, res) => {
     AppController.getStatus(req, res);
-    res.status(200);
   });
 
   router.get('/stats', (req, res) => {
