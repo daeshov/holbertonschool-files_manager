@@ -3,7 +3,7 @@ const Redis = require('redis'); // Correr "npm list redis" para asegurarme de te
 class RedisClient {
   constructor() {
     this.client = Redis.createClient();
-
+   
     // Manejar errores de conexión
     this.client.on('error', (err) => {
       console.error(`Error en la conexión Redis: ${err}`);

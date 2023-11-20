@@ -3,24 +3,21 @@ const MongoClient = require('mongodb');
 const host = process.env.DB_HOST || 'localhost';
 const port = process.env.DB_PORT || 27017;
 const dbName = process.env.DB_DATABASE || 'files_manager';
-const db_uri = "mongodb+srv://jdarahthomas:Z63ct2EYFgvLNyAg@cluster0.g80qlgd.mongodb.net/test?retryWrites=true&w=majority";
+const db_uri = "mongodb+srv://jdarahthomas:Z63ct2EYFgvLNyAg@cluster0.g80qlgd.mongodb.net/?retryWrites=true&w=majority";
+const client = new MongoClient(db_uri, {useNewUrlParser: true, useUnifiedTopology: true });
 
 class DBClient {
   constructor() {
     this.db = null;
-    MongoClient.connect(
-      `mongodb://${host}:${port}/${dbName}`,
-      { useUnifiedTopology: true },
-      async (err, client) => {
-        if (err) {
-          console.log(err);
-        } else {
-          this.db = client.db(dbName);
-          await this.db.createCollection('users');
-          await this.db.createCollection('files');
-        }
+    client.connect((err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        this.db = client.db('files_manager');
+        this.db.createCollection('users');
+        this.db.createCollection('files');
       }
-    );
+    });
   }
 
 
