@@ -1,49 +1,30 @@
-const sha1 = require('sha1');
-const user = require('../routes/index'); 
+import sha1 from 'sha1';
+import { ObjectId } from 'mongodb';
+import RedisClient from '../utils/redis';
+import dbClient from '../utils/db';
 
-const UsersController = {
-  postNew: async (req, res) => {
-    try {
-      // Extract email and password from the request body
-      const { email, password } = req.body;
+export const postNew = async (req, res) => {
+  const { email, password } = req.body;
 
-      // Check if email and password are provided
-      if (!email) {
-        return res.status(400).json({ error: 'Missing email' });
-      }
+  if (!email) return res.status(400).json({ error: 'Missing email' });
+  if (!password) return res.status(400).json({ error: 'Missing password' });
 
-      if (!password) {
-        return res.status(400).json({ error: 'Missing password' });
-      }
+  let user = await dbClient.findUser({ email });
+  if (user) return res.status(400).json({ error: 'Already exist' });
 
-      // Check if the email already exists in the database
-      const existingUser = await user.findOne({ email });
-      if (existingUser) {
-        return res.status(400).json({ error: 'Already exist' });
-      }
+  user = await dbClient.createUser(email, sha1(password));
 
-      // Hash the password using SHA1
-      const hashedPassword = sha1(password);
-
-      // Create a new user
-      const newUser = new user({
-        email,
-        password: hashedPassword,
-      });
-
-      // Save the new user to the database
-      await newUser.save();
-
-      // Return the new user with only the email and id
-      res.status(201).json({
-        email: newUser.email,
-        id: newUser._id, // Assuming MongoDB generates the ID automatically
-      });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-  },
+  return res.json(user);
 };
 
-module.exports = UsersController;
+export const getMe = async (req, res) => {
+  const token = req.header('X-token');
+
+  const uid = await RedisClient.get(`auth_${token}`);
+
+  if (!uid) return res.status(401).json({ error: 'Unauthorized' });
+
+  const user = await dbClient.findUser({ _id: ObjectId(uid) });
+
+  return res.json({ email: user.email, id: user._id });
+};
