@@ -6,12 +6,8 @@ const { promisify } = require('util');
 class RedisClient {
   constructor() {
     this.client = Redis.createClient();
-<<<<<<< HEAD
-   
-=======
 
     this.getAsync = promisify(this.client.get).bind(this.client);
->>>>>>> 8f2a07cbaada53bf3d6e19d5bedd4e0e770bfcb5
     // Manejar errores de conexión
     this.client.on('error', (err) => {
       console.error(`Error en la conexión Redis: ${err}`);
