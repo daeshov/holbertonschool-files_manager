@@ -18,8 +18,9 @@ export const postNew = async (req, res) => {
   const existingUser = await dbClient.findUser({ email });
   if (existingUser) {
     return res.status(400).json({ error: 'Already exist' });
-  }
 
+  }
+  const hashedPassword = sha1(password);
   const user = await dbClient.createUser(email, hashedPassword);
 
   return res.status(201).json({ email: user.email, id: user._id });
