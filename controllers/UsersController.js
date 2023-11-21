@@ -1,52 +1,30 @@
 import sha1 from 'sha1';
-import Queue from 'bull';
 import { ObjectId } from 'mongodb';
 import RedisClient from '../utils/redis';
 import dbClient from '../utils/db';
-import getIdAndKey from '../utils/users';
 
-const userQ = new Queue('userQ');
+export const postNew = async (req, res) => {
+  const { email, password } = req.body;
 
-class UsersController {
-  static async postNew(req, res) {
-      const { email, password } = req.body;
+  if (!email) return res.status(400).json({ error: 'Missing email' });
+  if (!password) return res.status(400).json({ error: 'Missing password' });
 
-      if (!email) return res.status(400).send({ error: 'Missing email' });
-      if (!password) return res.status(400).send({ error: 'Missing password' });
-      const emailExists = await dbClient.users.findOne({ email });
-      if (emailExists) return res.status(400).send({ error: 'Already exist' });
+  let user = await dbClient.findUser({ email });
+  if (user) return res.status(400).json({ error: 'Already exist' });
 
-      const secPass = sha1(password);
+  user = await dbClient.createUser(email, sha1(password));
 
-      const insertStat = await dbClient.users.insertOne({
-          email,
-          password: secPass,
-      });
+  return res.json(user);
+};
 
-      const createdUser = {
-          id: insertStat.insertedId,
-          email,
-      };
+export const getMe = async (req, res) => {
+  const token = req.header('X-token');
 
-      await userQ.add({
-          userId: insertStat.insertedId.toString(),
-      });
+  const uid = await RedisClient.get(`auth_${token}`);
 
-      return res.status(201).send(createdUser);
-  }
+  if (!uid) return res.status(401).json({ error: 'Unauthorized' });
 
-  static async getMe(req, res) {
-      const { userId } = await getIdAndKey(req);
+  const user = await dbClient.findUser({ _id: ObjectId(uid) });
 
-      const user = await dbClient.users.findOne({ _id: ObjectId(userId) });
-      if (!user) return res.status(401).send({ error: 'Unauthorized' });
-
-      const userInfo = { id: user._id, ...user };
-      delete userInfo._id;
-      delete userInfo.password;
-
-      return res.status(200).send(userInfo);
-  }
-}
-
-export default UsersController;
+  return res.json({ email: user.email, id: user._id });
+};
