@@ -15,7 +15,7 @@ class RedisClient {
     this.delAsync = promisify(this.client.del).bind(this.client);
   }
 
-  async isAlive() {
+  isAlive() {
     return this.client.connected;
   }
     // Verificar si la conexión está viva
