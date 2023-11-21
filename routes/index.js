@@ -51,13 +51,13 @@ function controllerRouting(app) {
     FilesController.putPublish(req, res);
   });
 
-  router.put('/files', (req, res) => {
-    FilesController.putUnpublish(req, res);
-  });
-  router.get('/files/:id/data', (req, res) => {
-    FilesController.getFile(req, res);
-
-  });
+//  router.put('/files', (req, res) => {
+//    FilesController.putUnpublish(req, res);
+//  });
+//  router.get('/files/:id/data', (req, res) => {
+//    FilesController.getFile(req, res);
+//
+// });
 }
 
 module.exports = controllerRouting;
