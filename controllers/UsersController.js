@@ -24,5 +24,3 @@ export const postNew = async (req, res) => {
 
   return res.status(201).json({ email: user.email, id: user._id });
 };
-
-export default UsersController;
