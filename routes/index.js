@@ -45,16 +45,18 @@ function controllerRouting(app) {
     FilesController.getIndex(req, res);
   });
 
-  router.put('/files/:id/publish', FilesController.putPublish);
-  router.put('/files/:id/unpublish', FilesController.putUnpublish);
+  router.put('/files', (req, res) => {
+    FilesController.putPublish(req, res);
+  });
 
+  router.put('/files', (req, res) => {
+    FilesController.putUnpublish(req, res);
+  });
   router.get('/files/:id/data', (req, res) => {
     FilesController.getFile(req, res);
-
-  
 
   });
 }
 
 module.exports = controllerRouting;
-module.exports = router;
+
