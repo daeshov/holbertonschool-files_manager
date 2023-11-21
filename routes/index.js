@@ -1,9 +1,11 @@
+import UsersController from '../controllers/UsersController';
+
 const express = require('express');
 const router = express.Router();
 const AppController = require('../controllers/AppController');
 const AuthController = require('../controllers/AuthController');
 const FilesController = require ('../controllers/FilesController');
-const UsersController = require ('../controllers/UsersController');
+
 
 function controllerRouting(app) {
   const router = express.Router();
