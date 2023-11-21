@@ -17,7 +17,7 @@ function controllerRouting(app) {
     AppController.getStats(req, res);
   });
 
-  route.post('/users', (req, res) => {
+  router.post('/users', (req, res) => {
     UsersController.postNew(req, res);
   });
 
