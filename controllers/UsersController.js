@@ -1,30 +1,52 @@
 import sha1 from 'sha1';
+import Queue from 'bull';
 import { ObjectId } from 'mongodb';
 import RedisClient from '../utils/redis';
 import dbClient from '../utils/db';
+import getIdAndKey from '../utils/users';
 
-export const postNew = async (req, res) => {
-  const { email, password } = req.body;
+const userQ = new Queue('userQ');
 
-  if (!email) return res.status(400).json({ error: 'Missing email' });
-  if (!password) return res.status(400).json({ error: 'Missing password' });
+class UsersController {
+  static async postNew(req, res) {
+      const { email, password } = req.body;
 
-  let user = await dbClient.findUser({ email });
-  if (user) return res.status(400).json({ error: 'Already exist' });
+      if (!email) return res.status(400).send({ error: 'Missing email' });
+      if (!password) return res.status(400).send({ error: 'Missing password' });
+      const emailExists = await dbClient.users.findOne({ email });
+      if (emailExists) return res.status(400).send({ error: 'Already exist' });
 
-  user = await dbClient.createUser(email, sha1(password));
+      const secPass = sha1(password);
 
-  return res.json(user);
-};
+      const insertStat = await dbClient.users.insertOne({
+          email,
+          password: secPass,
+      });
 
-export const getMe = async (req, res) => {
-  const token = req.header('X-token');
+      const createdUser = {
+          id: insertStat.insertedId,
+          email,
+      };
 
-  const uid = await RedisClient.get(`auth_${token}`);
+      await userQ.add({
+          userId: insertStat.insertedId.toString(),
+      });
 
-  if (!uid) return res.status(401).json({ error: 'Unauthorized' });
+      return res.status(201).send(createdUser);
+  }
 
-  const user = await dbClient.findUser({ _id: ObjectId(uid) });
+  static async getMe(req, res) {
+      const { userId } = await getIdAndKey(req);
 
-  return res.json({ email: user.email, id: user._id });
-};
+      const user = await dbClient.users.findOne({ _id: ObjectId(userId) });
+      if (!user) return res.status(401).send({ error: 'Unauthorized' });
+
+      const userInfo = { id: user._id, ...user };
+      delete userInfo._id;
+      delete userInfo.password;
+
+      return res.status(200).send(userInfo);
+  }
+}
+
+export default UsersController;
