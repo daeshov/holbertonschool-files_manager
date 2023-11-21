@@ -9,9 +9,14 @@ class RedisClient {
 
     this.getAsync = promisify(this.client.get).bind(this.client);
     // Manejar errores de conexión
-    this.client.on('error', (error) => {
+    this.client.on('error', (err) => {
       console.error(`Error en la conexión Redis: ${error.message}`);
     });
+
+    this.getAsync = promisify(this.client.get).bind(this.client);
+    this.setAsync = promisify(this.client.set).bind(this.client);
+    this.delAsync = promisify(this.client.del).bind(this.client);
+
   }
 
   async isAlive() {
@@ -30,11 +35,11 @@ class RedisClient {
   }
 
   async set(key, value, duration) {
-    this.client.setex(key, duration, value);
+    return this.client.setAsync(key, duration, 'EX', value);
   }
 
   async del(key) {
-    this.client.del(key);
+    return this.client.delAsync(key);
   }
 }
 
