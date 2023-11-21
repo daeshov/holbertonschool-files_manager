@@ -1,4 +1,5 @@
 const express = require('express');
+const router = express.Router();
 const AppController = require('../controllers/AppController');
 const AuthController = require('../controllers/AuthController');
 const FilesController = require ('../controllers/FilesController');
@@ -44,13 +45,8 @@ function controllerRouting(app) {
     FilesController.getIndex(req, res);
   });
 
-  router.put('/files/:id/publish', (req, res) => {
-    FilesController.putPublish(req, res);
-  });
-
-  router.put('/files/:id/unpublish', (req, res) => {
-    FilesController.putUnpublish(req, res);
-  });
+  router.put('/files/:id/publish', FilesController.putPublish);
+  router.put('/files/:id/unpublish', FilesController.putUnpublish);
 
   router.get('/files/:id/data', (req, res) => {
     FilesController.getFile(req, res);
@@ -61,3 +57,4 @@ function controllerRouting(app) {
 }
 
 module.exports = controllerRouting;
+module.exports = router;
