@@ -1,5 +1,4 @@
 const MongoClient = require('mongodb');
-
 const host = process.env.DB_HOST || 'localhost';
 const port = process.env.DB_PORT || 27017;
 const dbName = process.env.DB_DATABASE || 'files_manager';
