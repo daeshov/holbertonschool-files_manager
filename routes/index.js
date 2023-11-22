@@ -59,4 +59,3 @@ function controllerRouting(app) {
 }
 
 module.exports = controllerRouting;
-

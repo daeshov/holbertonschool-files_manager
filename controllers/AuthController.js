@@ -4,6 +4,7 @@ import sha1 from 'sha1';
 import dbClient from '../utils/db';
 import redisClient from '../utils/redis';
 
+
 export const getConnect = async (req, res) => {
   const authHeader = req.header('Authorization').slice(6);
 

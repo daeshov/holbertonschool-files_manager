@@ -1,8 +1,8 @@
 const MongoClient = require('mongodb');
 
-const host = process.env.DB_HOST || 'localhost';
+const host = process.env.DB_HOST || 'jdarahthomas:Z63ct2EYFgvLNyAg@cluster0.g80qlgd.mongodb.net';
 const port = process.env.DB_PORT || 27017;
-const dbName = process.env.DB_DATABASE || 'files_manager';
+const dbName = process.env.DB_DATABASE || 'test';
 const db_uri = "mongodb+srv://jdarahthomas:Z63ct2EYFgvLNyAg@cluster0.g80qlgd.mongodb.net/test?retryWrites=true&w=majority";
 
 class DBClient {
@@ -13,7 +13,7 @@ class DBClient {
       { useUnifiedTopology: true },
       async (err, client) => {
         if (err) {
-          console.log(err);
+          console.log("cualquiervaina", err);
         } else {
           this.db = client.db(dbName);
           await this.db.createCollection('users');

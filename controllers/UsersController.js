@@ -1,9 +1,11 @@
+import crypto from 'crypto';
 import sha1 from 'sha1';
 import { ObjectId } from 'mongodb';
 import RedisClient from '../utils/redis';
 import dbClient from '../utils/db';
 
-export const postNew = async (req, res) => {
+class UsersController {
+  static async postNew(request, response) {
   const { email, password } = req.body;
 
   if (!email) {
@@ -18,9 +20,34 @@ export const postNew = async (req, res) => {
   const existingUser = await dbClient.findUser({ email });
   if (existingUser) {
     return res.status(400).json({ error: 'Already exist' });
+
   }
 
-  const user = await dbClient.createUser(email, hashedPassword);
+  const hashedPassword = crypto.createHash('sha1').update(password).digest('hex');
 
-  return res.status(201).json({ email: user.email, id: user._id });
-};
+  const user = await dbClient.db.collection('users').insertOne({
+    email,
+    password: hashedPassword,
+  });
+
+  return res.status(201).json({ id: user.insertedId, email });
+  }
+
+  static async getMe(req, res) {
+    const token = req.headers['x-token'];
+    const key = `auth_${token}`;
+    const userId = await redisClient.get(key);
+    if (!userId) {
+      return res.status(401).send({ error: 'Unauthorized' });
+    }
+
+    const user = await dbClient.db.collection('users').findOne({ _id: ObjectId(userId) });
+
+    if (!user) {
+      return res.status(401).send({ error: 'Unauthorized' });
+    }
+    return res.status(200).send({ id: user._id, email: user.email });
+  }
+}
+
+export default UsersController;
