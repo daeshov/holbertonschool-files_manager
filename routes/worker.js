@@ -1,7 +1,7 @@
+/* eslint-disable jest/require-hook */
 import Queue from 'bull';
 import imageThumbnail from 'image-thumbnail';
-
-import writeFile from './utils/write';
+import writeFile from '../utils/write.js';
 
 const fileQueue = new Queue('image transcoding');
 fileQueue.process(async ({ data }, done) => {

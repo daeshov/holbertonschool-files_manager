@@ -1,7 +1,6 @@
 const Redis = require('redis'); // Correr "npm list redis" para asegurarme de tener instalada la biblioteca Redis
 const { promisify } = require('util');
-//import * as redis from 'redis';
-
+// import * as redis from 'redis';
 
 class RedisClient {
   constructor() {
@@ -18,13 +17,13 @@ class RedisClient {
   isAlive() {
     return this.client.connected;
   }
-    // Verificar si la conexión está viva
-//    return new Promise((resolve) => {
-//      this.client.ping('pong', (err) => {
-//        resolve(err);
-//      });
-//    });
-//  }
+  // Verificar si la conexión está viva
+  //    return new Promise((resolve) => {
+  //      this.client.ping('pong', (err) => {
+  //        resolve(err);
+  //      });
+  //    });
+  //  }
 
   async get(key) {
     return this.getAsync(key);

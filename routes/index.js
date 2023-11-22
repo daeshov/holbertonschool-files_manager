@@ -1,9 +1,10 @@
 const express = require('express');
-const router = express.Router();
+
+// const router = express.Router();
 const AppController = require('../controllers/AppController');
 const AuthController = require('../controllers/AuthController');
-const FilesController = require ('../controllers/FilesController');
-const UsersController = require ('../controllers/UsersController');
+const FilesController = require('../controllers/FilesController');
+const UsersController = require('../controllers/UsersController');
 
 function controllerRouting(app) {
   const router = express.Router();
@@ -52,7 +53,7 @@ function controllerRouting(app) {
   router.put('/files', (req, res) => {
     FilesController.putUnpublish(req, res);
   });
-  
+
   router.get('/files/:id/data', (req, res) => {
     FilesController.getFile(req, res);
   });
