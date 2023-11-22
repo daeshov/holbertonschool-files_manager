@@ -1,5 +1,4 @@
 const express = require('express');
-
 // const router = express.Router();
 const AppController = require('../controllers/AppController');
 const AuthController = require('../controllers/AuthController');
@@ -18,7 +17,9 @@ function controllerRouting(app) {
     AppController.getStats(req, res);
   });
 
+
   router.post('/users', (req, res) => {
+    console.log(req);
     UsersController.postNew(req, res);
   });
 
