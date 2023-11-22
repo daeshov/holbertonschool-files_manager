@@ -13,16 +13,15 @@ class DBClient {
       { useUnifiedTopology: true },
       async (err, client) => {
         if (err) {
-          console.log("cualquiervaina", err);
+          console.log('cualquiervaina', err);
         } else {
           this.db = client.db(dbName);
           await this.db.createCollection('users');
           await this.db.createCollection('files');
         }
-      }
+      },
     );
   }
-
 
   isAlive() {
     return !!this.db;

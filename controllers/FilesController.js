@@ -118,11 +118,11 @@ export const putUnPublish = async (req, res) => {
 
   return res.json(file);
 };
-//task 8
+// task 8
 export const getFile = async (req, res) => {
   const { id } = req.params;
 
-console.log(id);
+  console.log(id);
   const file = await dbClient.findFile({ _id: ObjectID(id) });
   if (!file) return res.status(404).json({ error: 'Not found' });
 
