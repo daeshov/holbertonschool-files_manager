@@ -16,8 +16,8 @@ export const getConnect = async (req, res) => {
 
   if (!user) return res.status(401).json({ error: 'Unauthorized' });
 
-  if (sha1(password) !== user.password) {
-    return res.status(403).json({ error: 'Invalid credentials' });
+  if (!email || !password) {
+    throw new Error('Invalid credentials format');
   }
 
   const token = uuid();
@@ -39,3 +39,5 @@ export const getDisconnect = async (req, res) => {
 
   return res.status(204).json({});
 };
+
+export default AuthController;
