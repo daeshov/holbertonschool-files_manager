@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-// import sha1 from 'sha1';
+import sha1 from 'sha1';
 import { ObjectId } from 'mongodb';
 import RedisClient from '../utils/redis';
 import dbClient from '../utils/db';
