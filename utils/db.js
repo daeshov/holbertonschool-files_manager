@@ -13,7 +13,7 @@ class DBClient {
       { useUnifiedTopology: true },
       async (err, client) => {
         if (err) {
-          console.log('cualquiervaina', err);
+          console.log(err);
         } else {
           this.db = client.db(dbName);
           await this.db.createCollection('users');
