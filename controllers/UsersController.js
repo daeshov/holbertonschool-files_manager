@@ -6,7 +6,6 @@ import dbClient from '../utils/db';
 
 class UsersController {
   static async postNew(req, res) {
-
     if (!email) {
       return res.status(400).json({ error: 'Missing email' });
     }
