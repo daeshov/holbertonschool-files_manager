@@ -3,7 +3,7 @@ const MongoClient = require('mongodb');
 const host = process.env.DB_HOST || 'localhost';
 const port = process.env.DB_PORT || 27017;
 const dbName = process.env.DB_DATABASE || 'files_manager';
-const db_uri = "mongodb+srv://jdarahthomas:Z63ct2EYFgvLNyAg@cluster0.g80qlgd.mongodb.net/test?retryWrites=true&w=majority";
+// const dburi = 'mongodb+srv://jdarahthomas:Z63ct2EYFgvLNyAg@cluster0.g80qlgd.mongodb.net/test?retryWrites=true&w=majority';
 
 class DBClient {
   constructor() {
@@ -19,10 +19,9 @@ class DBClient {
           await this.db.createCollection('users');
           await this.db.createCollection('files');
         }
-      }
+      },
     );
   }
-
 
   isAlive() {
     return !!this.db;
