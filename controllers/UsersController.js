@@ -29,5 +29,6 @@ export const postNew = async (req, res) => {
     password: hashedPassword,
   });
 
-  return res.status(201).json({ email: user.email, id: user._id });
+  return res.status(201).json({ id: user.insertedId, email });
+
 };
