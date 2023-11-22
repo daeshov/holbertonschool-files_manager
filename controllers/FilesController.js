@@ -1,8 +1,5 @@
 import { ObjectID } from 'mongodb';
-<<<<<<< HEAD
 // import mimeTypes from 'mime-types';
-=======
->>>>>>> 2a8f3bb3e1c42812c590dd835e495f1ab682463a
 import { v4 as uuid } from 'uuid';
 import mime from 'mime-types';
 import redisClient from '../utils/redis';
