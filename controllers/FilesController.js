@@ -1,4 +1,5 @@
 import { ObjectID } from 'mongodb';
+// import mimeTypes from 'mime-types';
 import { v4 as uuid } from 'uuid';
 import mime from 'mime-types';
 import redisClient from '../utils/redis';
@@ -117,11 +118,11 @@ export const putUnPublish = async (req, res) => {
 
   return res.json(file);
 };
-//task 8
+// task 8
 export const getFile = async (req, res) => {
   const { id } = req.params;
 
-console.log(id);
+  console.log(id);
   const file = await dbClient.findFile({ _id: ObjectID(id) });
   if (!file) return res.status(404).json({ error: 'Not found' });
 
